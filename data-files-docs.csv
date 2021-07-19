@@ -1,0 +1,29 @@
+data_file,type,description,comment
+01-data-sources/01-partyfacts/core-parties.csv,fetch,Party Facts core parties,includes Wikipedia urls used to get Wikipedia data
+01-data-sources/01-partyfacts/countries.csv,fetch,Party Facts country names,used for graphs and summary tables
+01-data-sources/01-partyfacts/external-parties.csv,fetch,Party Facts dataset parties list,used to create dataset for validation
+01-data-sources/02-wikipedia/wikipedia-data/01-wp-data-json.zip,fetch,Wikipedia data,"document-oriented data format (json, no rectangular dataset)"
+01-data-sources/02-wikipedia/wikipedia-data/02a-wp-dataset-csv.zip,create,Wikipedia dataset,rectangular dataset
+01-data-sources/02-wikipedia/wikipedia-data/02b-infobox.csv,create,infobox dataset,party position and ideology tags from Wikipedia infobox
+01-data-sources/02-wikipedia/wikipedia-data/03-infobox-tags.csv,create,infobox tags dataset,link targets of infobox entries (including redirects)
+01-data-sources/03-party-positions/01-sources-select/ches-positions.csv,source,Chapel Hill Expert Survey,data subset used for validation
+01-data-sources/03-party-positions/01-sources-select/dalp-positions.csv,source,Kitschelt (2013),data subset used for validation
+01-data-sources/03-party-positions/01-sources-select/manifesto-rile.csv,source,Manifesto left-right positions,data subset used for validation
+01-data-sources/03-party-positions/01-sources-select/wvs-left-right.csv,source,World Value Survey left-right positions,data subset used for validation
+01-data-sources/03-party-positions/02-party-positions.csv,create,aggregated party positions used for validation,
+02-data-preparation/01-wp-infobox.csv,create,tag selection for analysis (long format),
+02-data-preparation/02-wp-data.csv,create,tag dataset for estimation (wide format),
+03-estimation/03-convergence.nb.html,document,estimation checks,
+03-estimation/estimation-model/01-data-m1.RData,create,parameters for models estimation,
+03-estimation/estimation-model/01-data-m2.RData,create,parameters for models estimation,
+03-estimation/estimation-model/02-result-m1.RData,estimate,model estimation Jags results,
+03-estimation/estimation-model/02-result-m2.RData,estimate,model estimation Jags results,
+03-estimation/estimation-results/positions-parties-m1.csv,create,estimated party positions,
+03-estimation/estimation-results/positions-parties-m2.csv,create,estimated party positions,
+03-estimation/estimation-results/positions-tags-m1.csv,create,estimated tag positions,
+03-estimation/estimation-results/positions-tags-m2.csv,create,estimated tag positions,
+04-data-final/party-position-tags.csv,create,party positions,"includes party name, positions, tags"
+04-data-final/tag-position.csv,create,tag positions,
+05-validation/correlation-country.csv,create,country wise correlation,validation
+05-validation/validation.nb.html,document,validation checks,
+06-figures-tables/tab-coverage.csv,create,coverage of parties worldwide for datasets,

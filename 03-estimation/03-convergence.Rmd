@@ -1,0 +1,188 @@
+---
+title: "Convergence checks"
+date: "`r format(Sys.time(), '%d %B %Y, %H:%M')`"
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_float: yes
+---
+<style type="text/css"> <!-- .table { width: auto } ---> </style>
+
+```{r options, include=FALSE}
+knitr::opts_chunk$set(
+  # results = "hide",
+  message = FALSE,
+  warning = FALSE,
+  package.startup.message = FALSE
+  )
+
+options(
+  knitr.kable.NA = "",
+  width = 100
+)
+```
+
+```{r}
+library(jagsUI)
+
+wp_model <- 2  # set Model to estimate -- M1 or M2
+
+file_wikipedia <- "../01-data-sources/02-wikipedia/wikipedia-data/01-wp-data-json.zip"
+file_wikipedia_date <- substr(file.info(file_wikipedia)$mtime, 1, 10)
+
+file_estimation <- sprintf("estimation-model/02-result-m%d.RData", wp_model)
+file_estimation_date <- substr(file.info(file_estimation)$mtime, 1, 10)
+```
+
+__Model `r wp_model`__ — M1 ideology tags only, M2 ideology and position tags
+
++ Wikipedia data download -- `r file_wikipedia_date`
++ Model estimation -- `r file_estimation_date`
++ [ date file modified ]
+
+
+## Convergence diagnosis
+
+```{r}
+load(sprintf("estimation-model/02-result-m%d.RData", wp_model))
+```
+
+
+```{r}
+params <- c("alpha", "beta", "o", "x")
+
+if (wp_model == 2) {
+  
+  params <- c(c("gamma", "tau"), params)
+  
+}
+
+pl_params <- substr(params, 1, 1)
+n_params <- length(params)
+```
+
+```{r}
+get_df <- function(var) {
+
+  quantile_select <- c(0.5, 0.75, 0.9, 0.95, 0.99)
+
+  if (var == "n.eff") {
+    
+    quantile_select <- abs(rev(quantile_select) - 1)
+    
+  }
+
+  dt <- data.frame(
+    min = round(sapply(jags_out[[var]][1:n_params], min), 3),
+    mean = round(sapply(jags_out[[var]][1:n_params], mean), 3),
+    max = round(sapply(jags_out[[var]][1:n_params], max), 3),
+    quant = t(
+      round(sapply(jags_out[[var]][1:n_params], quantile, quantile_select), 3)
+      ),
+    Npar = sapply(jags_out[[var]][1:n_params], length)
+  )
+  
+  names(dt) <- gsub("quant\\.", "", names(dt))
+  names(dt) <- gsub("\\.$", "%", names(dt))
+  rownames(dt) <- params
+  
+  return(dt)
+}
+```
+
+Scale reduction factors $\hat{R}$ --- close to one and all values < 1.1.
+
+```{r}
+get_df("Rhat")
+```
+
+Effective samples sizes $N_{eff}$ --- all values > 100
+
+```{r}
+get_df("n.eff")
+```
+
+
+## SD / Mean checks
+
+Confirming $\bar{x} = 0$
+
+```{r}
+round(summary(apply(jags_out$sims.list$x, 1, mean)), 3)
+```
+
+Confirming $\text{SD}(x) = 1$
+
+```{r}
+round(summary(apply(jags_out$sims.list$x, 1, sd)), 3)
+```
+
+
+## Distribution parties
+
+```{r}
+plot(density(jags_out$mean$x), main = "")
+```
+
+
+## Traceplots
+
+Inspect traceplots for particular parameters
+
+__Plots only presented for critical values__
+
+-----
+
+```{r}
+check_condition <- function(var_1, operator, var_2) {
+  
+   operator(var_1, var_2)
+  
+}
+
+get_plots <- function(var, operator, value) {
+  
+  pars <- list()
+  
+  for (l in pl_params) {
+    
+    pars[[l]] <- sapply(
+      which(check_condition(jags_out[[var]][[l]], operator, value)), 
+      function(.x) paste0(l, "[", .x, "]")
+    )
+    
+    if (! is.character(pars[[l]])) {
+      
+      pars[[l]] <- NULL 
+      
+    }
+    
+  }
+  
+  pars <- unlist(pars)
+  
+  if (! is.null(pars)) {
+    
+    lapply(pars, function(.x) traceplot(jags_out, parameters = .x))
+    
+  }
+}
+```
+
+### R-hat
+
+Parameters with $\hat{R} > 1.1$
+
+```{r}
+get_plots("Rhat", `>`, 1.1)
+```
+
+### N-eff
+
+Parameters with $N_{eff} < 100$
+
+```{r}
+get_plots("n.eff", `<`, 100)
+```
+

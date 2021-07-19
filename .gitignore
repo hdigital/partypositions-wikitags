@@ -1,0 +1,40 @@
+source__*
+01-data-sources/03-party-positions/00-sources-raw/
+03-estimation/estimation-model/02*.RData
+zyx
+
+# MacOS
+.dropbox
+.DS_Store
+Icon*
+
+# Visual Studio Code
+.vscode
+
+# Shell
+.bash_history
+
+# Python
+.python_history
+.python-version
+.venv
+venv
+
+# R files
+## History files
+.Rhistory
+.Rapp.history
+## Session Data files
+.RData
+# RStudio files
+.config
+.local
+.rstudio
+.Rproj.user/
+# knitr and R markdown default cache directories
+/*_cache/
+/cache/
+# Temporary files created by R markdown
+*.utf8.md
+*.knit.md
+.Rproj.user

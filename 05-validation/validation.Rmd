@@ -1,0 +1,147 @@
+---
+title: "Validation Wikipedia positions"
+date: "`r format(Sys.time(), '%d %B %Y, %H:%M')`"
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_float: yes
+---
+<style type="text/css"> <!-- .table { width: auto } ---> </style>
+
+```{r options, include=FALSE}
+knitr::opts_chunk$set(
+  # results = "hide",
+  message = FALSE,
+  warning = FALSE,
+  package.startup.message = FALSE
+  )
+
+options(
+  knitr.kable.NA = "",
+  readr.num_columns = 0,
+  width = 100
+)
+```
+
+
+```{r sources, message=FALSE}
+library(tidyverse)
+
+wp_raw <- read_csv("../04-data-final/party-position-tags.csv")
+pp_raw <- read_csv("../01-data-sources/03-party-positions/02-party-positions.csv")
+
+file_wikipedia <- "../01-data-sources/02-wikipedia/wikipedia-data/01-wp-data-json.zip"
+file_wikipedia_date <- substr(file.info(file_wikipedia)$mtime, 1, 10)
+
+file_estimation <- "../03-estimation/estimation-model/02-result-m2.RData"
+file_estimation_date <- substr(file.info(file_estimation)$mtime, 1, 10)
+```
+
+Model 2 data information
+
++ Wikipedia data download -- `r file_wikipedia_date`
++ Model estimation -- `r file_estimation_date`
++ [ date file modified ]
+
+Data used for validation
+
++ CHES -- Chapel Hill Expert Survey
++ DALP -- Democratic Accountability and Linkages Project
++ MP -- Manifesto Project
++ WVS -- World Values Survey
+
+```{r data}
+pp_long <- 
+  pp_raw %>% 
+  select(country, where(is.numeric)) %>% 
+  pivot_longer(
+    cols = c(-country, -partyfacts_id),
+    names_to = "variable",
+    values_to = "position",
+    values_drop_na = TRUE
+    ) %>% 
+  filter(! str_detect(variable, "_id$"))
+
+dt <- 
+  pp_long %>% 
+  left_join(
+    select(wp_raw, partyfacts_id, position_wp=position),
+    by = "partyfacts_id"
+    ) %>% 
+  mutate(
+    dataset = str_remove_all(variable, "_.*") %>% str_to_upper(),
+    variable = str_remove(variable, "^.*?_"),
+    ) %>% 
+  na.omit()
+```
+
+## Left-right positions
+
+```{r left-right-graph, message=FALSE}
+pl_dt <-
+  dt %>%
+  filter(variable == "left_right") %>% 
+  select(dataset, left_right=position, wikipedia_tags=position_wp)
+
+pl <- ggplot(pl_dt, aes(x = left_right, y = wikipedia_tags)) +
+  geom_smooth(method = lm, se = FALSE) +
+  geom_point(alpha = 0.3) +
+  facet_wrap(vars(dataset), scales = "free_x")
+
+print(pl)
+ggsave("datasets-left-right.png", plot = pl)
+```
+
+## Correlation datasets
+
+```{r, rows.print = 12}
+dt %>% 
+  group_by(dataset, variable) %>% 
+  summarise(
+    correlation = round(cor(position, position_wp, use = "na.or.complete"), 2),
+    .groups = "drop"
+    ) %>% 
+  arrange(desc(correlation)) %>% 
+  knitr::kable()
+```
+
+
+## Correlation country wise
+
+```{r, message=FALSE, warning=FALSE}
+cor_ctry <- 
+  dt %>% 
+  group_by(country, dataset, variable) %>% 
+  summarise(
+    correlation = round(cor(position, position_wp, use = "na.or.complete"), 2),
+    .groups = "drop"
+    ) %>% 
+  arrange(country, variable, dataset)
+
+write_csv(cor_ctry, "correlation-country.csv")
+```
+
+```{r}
+probs_par <- c(0.1, 0.25, 0.5, 0.75, 0.9)
+
+cor_qtl <- 
+  cor_ctry %>% 
+  group_by(dataset, variable) %>% 
+  summarise(enframe(quantile(correlation, probs_par, na.rm = TRUE),
+                    "quantile", "correlation"),
+            .groups = "drop") %>% 
+  mutate(correlation = round(correlation, 2))
+
+cor_qtl %>%
+  pivot_wider(
+    names_from = quantile,
+    values_from = correlation
+  ) %>% 
+  group_by(dataset) %>% 
+  arrange(dataset, desc(`50%`)) %>% 
+  knitr::kable()
+```
+
+
+
