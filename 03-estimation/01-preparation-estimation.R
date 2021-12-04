@@ -82,6 +82,11 @@ generate_ab <- function(x, o, y_mat) {
 }
 
 
+## Files output ----
+
+filename_out <- "03-estimation/estimation-model/01-data-m%d.RData"
+
+
 
 ### Data preparation ----
 
@@ -107,6 +112,9 @@ bcm_raw <- bcm_raw[, names(bcm_raw) != "partyfacts_id"]
 
 
 ## Model 1 ----
+
+wp_model <- 1
+
 
 # Trim data (minimum occurrences) ---
 
@@ -142,11 +150,13 @@ save(
   ab_init,
   party,
   partyfacts_id,
-  file = "03-estimation/estimation-model/01-data-m1-stan.RData"
+  file = sprintf(filename_out, wp_model)
 )
 
 
 ## Model 2 ----
+
+wp_model <- 2
 
 bcm <- select_submat(bcm_raw, min_parties, min_tags)
 ideology_mat <- bcm[, ! names(bcm) %in% lr]
@@ -194,5 +204,5 @@ save(
   t_init,
   party,
   partyfacts_id,
-  file = "03-estimation/estimation-model/01-data-m2-stan.RData"
+  file = sprintf(filename_out, wp_model)
 )
