@@ -40,7 +40,7 @@ filename_stan_diags <- sprintf(
 
 ## Stan input ----
 
-load(sprintf("03-estimation/estimation-model/01-data-m%d-stan.RData", wp_model))
+load(sprintf("03-estimation/estimation-model/01-data-m%d.RData", wp_model))
 
 param_save <- c("a", "b", "o", "x")
 
