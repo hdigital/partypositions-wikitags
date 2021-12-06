@@ -24,7 +24,7 @@ We use [Docker](https://docs.docker.com/get-docker/) as a replication environmen
 __Note__ — Using [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) workflow – _0-wp-data.Rproj_. All R scripts use project root as base path and file paths are based on it.
 
 + [z-run-all.R](z-run-all.R) — stepwise execution all scripts (R and Python)
-+ [data-table-docs.csv](data-table-docs.csv) — documentation all datasets (path, type, description)
++ [data-files-docs.csv](data-files-docs.csv) — documentation all datasets (path, type, description)
 
 ### Folders
 
