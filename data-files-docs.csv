@@ -13,11 +13,25 @@ data_file,type,description,comment
 01-data-sources/03-party-positions/02-party-positions.csv,create,aggregated party positions used for validation,
 02-data-preparation/01-wp-infobox.csv,create,tag selection for analysis (long format),
 02-data-preparation/02-wp-data.csv,create,tag dataset for estimation (wide format),
-03-estimation/03-convergence.nb.html,document,estimation checks,
+03-estimation/03-convergence.nb.html,document,convergence diagnosis and estimation checks,
 03-estimation/estimation-model/01-data-m1.RData,create,parameters for models estimation,
 03-estimation/estimation-model/01-data-m2.RData,create,parameters for models estimation,
-03-estimation/estimation-model/02-result-m1.RData,estimate,model estimation Jags results,
-03-estimation/estimation-model/02-result-m2.RData,estimate,model estimation Jags results,
+03-estimation/estimation-model/02-stan-samples-m1_1.csv,estimate,model estimation (chain) results,
+03-estimation/estimation-model/02-stan-samples-m1_2.csv,estimate,model estimation (chain) results,
+03-estimation/estimation-model/02-stan-samples-m1_3.csv,estimate,model estimation (chain) results,
+03-estimation/estimation-model/02-stan-samples-m1_4.csv,estimate,model estimation (chain) results,
+03-estimation/estimation-model/02-stan-samples-m2_1.csv,estimate,model estimation (chain) results,
+03-estimation/estimation-model/02-stan-samples-m2_2.csv,estimate,model estimation (chain) results,
+03-estimation/estimation-model/02-stan-samples-m2_3.csv,estimate,model estimation (chain) results,
+03-estimation/estimation-model/02-stan-samples-m2_4.csv,estimate,model estimation (chain) results,
+03-estimation/estimation-model/02-stan-diags-m1_1.csv,estimate,model estimation (chain) NUTS diagnostics
+03-estimation/estimation-model/02-stan-diags-m1_2.csv,estimate,model estimation (chain) NUTS diagnostics
+03-estimation/estimation-model/02-stan-diags-m1_3.csv,estimate,model estimation (chain) NUTS diagnostics
+03-estimation/estimation-model/02-stan-diags-m1_4.csv,estimate,model estimation (chain) NUTS diagnostics
+03-estimation/estimation-model/02-stan-diags-m2_1.csv,estimate,model estimation (chain) NUTS diagnostics
+03-estimation/estimation-model/02-stan-diags-m2_2.csv,estimate,model estimation (chain) NUTS diagnostics
+03-estimation/estimation-model/02-stan-diags-m2_3.csv,estimate,model estimation (chain) NUTS diagnostics
+03-estimation/estimation-model/02-stan-diags-m2_4.csv,estimate,model estimation (chain) NUTS diagnostics
 03-estimation/estimation-results/positions-parties-m1.csv,create,estimated party positions,
 03-estimation/estimation-results/positions-parties-m2.csv,create,estimated party positions,
 03-estimation/estimation-results/positions-tags-m1.csv,create,estimated tag positions,
