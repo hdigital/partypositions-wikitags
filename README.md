@@ -1,6 +1,6 @@
 # Wikipedia tag classification
 
-Herrmann, Michael, and Holger Döring. 2021. “Party Positions from Wikipedia Classifications of Party Ideology.” Political Analysis. (forthcoming, [pre-print](https://osf.io/evxn6))
+Herrmann, Michael, and Holger Döring. 2021. “Party Positions from Wikipedia Classifications of Party Ideology.” Political Analysis. Advance online publication. doi: [10.1017/pan.2021.28](https://www.doi.org/10.1017/pan.2021.28) ([pre-print](https://osf.io/evxn6))
 
 + Holger Döring — doering@uni-bremen.de
 + Michael Herrmann — michael.herrmann@uni-konstanz.de
