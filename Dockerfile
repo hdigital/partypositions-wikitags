@@ -11,6 +11,8 @@ COPY 01-data-sources/02-wikipedia/requirements.txt /home/requirements.txt
 RUN pip3 install -r /home/requirements.txt
 RUN install2.r ggrepel jagsUI
 
+WORKDIR /home/rstudio
+
 
 # Notes building image and container
 ## # https://github.com/rocker-org/rocker-versioned2
@@ -18,5 +20,11 @@ RUN install2.r ggrepel jagsUI
 
 ## docker build -t wp-rstudio .
 ## docker run --rm -it -v $(pwd):/home/rstudio -p 8787:8787 -e DISABLE_AUTH=true wp-rstudio
-## # use '${PWD}' instead of '$(pwd)' on Windows 10 Powershell
+## # use '${pwd}' instead of '$(pwd)' on Windows 10 Powershell
 ## # http://localhost:8787/
+
+
+# Notes Docker usage shell
+## docker ps -a                         # get <CONTAINER-ID>
+## docker exec -it <CONTAINER-ID> bash  # access container with Bash shell
+## R --vanilla < z-run-all.R            # run in root@<CONTAINER-ID>:/home/rstudio
