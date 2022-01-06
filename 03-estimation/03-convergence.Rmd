@@ -93,7 +93,7 @@ get_df <- function(var) {
     maxmin = round(sapply(param_stat, max), digits),
     quant = t(round(sapply(param_stat, quantile, quantile_select), digits)),
     mean = round(sapply(param_stat, mean), digits),
-    Npar = sapply(param_stat, length)
+    N_par = sapply(param_stat, length)
   )
   if (var == "n_eff") {
     
