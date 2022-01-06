@@ -20,8 +20,8 @@ WORKDIR /home/rstudio
 ## # https://www.rocker-project.org
 ## # https://github.com/rocker-org/rocker-versioned2
 
-## docker build -t wp-rstudio .
-## docker run --rm -it --name wp-rocker -v $(pwd):/home/rstudio -p 8787:8787 -e DISABLE_AUTH=true wp-rstudio
+## docker build -t wp-rstudio-stan .
+## docker run --rm -it --name wp-rocker -v $(pwd):/home/rstudio -p 8787:8787 -e DISABLE_AUTH=true wp-rstudio-stan
 ## # use '${pwd}' instead of '$(pwd)' on Windows 10 Powershell
 ## # http://localhost:8787/
 
