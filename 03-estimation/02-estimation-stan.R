@@ -84,8 +84,17 @@ stan_inits <- setNames(
 # Run Stan ----
 
 if (any(file.exists(files_stan_samples))) {
-  
-  stan_out <- read_stan_csv(files_stan_samples)
+  error_msg <- "No Stan estimation. Remove incomplete '02-stan-*' files"
+
+  stan_out <- tryCatch(
+    {
+      read_stan_csv(files_stan_samples)
+    },
+    error = function(cond) {
+      message(cond)
+      stop(error_msg)
+    }
+  )
   
 } else {
   
