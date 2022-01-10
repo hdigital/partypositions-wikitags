@@ -1,6 +1,6 @@
 source__*
 01-data-sources/03-party-positions/00-sources-raw/
-03-estimation/estimation-model/02*.RData
+03-estimation/estimation-model/02*.csv
 zyx
 
 # MacOS
