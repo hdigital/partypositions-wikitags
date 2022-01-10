@@ -1,3 +1,6 @@
+// Stan code for model 1
+// estimate party positions from ideology tags only
+
 data {
 
   int<lower=1> con;
