@@ -1,0 +1,5 @@
+results from JAGS model estimations (M2 [M1]) not included in Git repository
+
+archive of estimation results available at:
+
+https://seafile.zfn.uni-bremen.de/d/c5a3135e5d454fd88c1a/
