@@ -24,14 +24,18 @@ options(
 ```
 
 ```{r}
-library(jagsUI)
+suppressMessages(library(rstan))
 
 wp_model <- 2  # set Model to estimate -- M1 or M2
 
 file_wikipedia <- "../01-data-sources/02-wikipedia/wikipedia-data/01-wp-data-json.zip"
 file_wikipedia_date <- substr(file.info(file_wikipedia)$mtime, 1, 10)
 
-file_estimation <- sprintf("estimation-model/02-result-m%d.RData", wp_model)
+file_estimation <- list.files(
+  "../03-estimation/estimation-model", 
+  pattern = sprintf("02-stan-samples-m%d_[[:digit:]].csv", wp_model),
+  full.names = TRUE
+)
 file_estimation_date <- substr(file.info(file_estimation)$mtime, 1, 10)
 ```
 
@@ -43,55 +47,70 @@ __Model `r wp_model`__ — M1 ideology tags only, M2 ideology and position tags
 
 
 ## Convergence diagnosis
-
 ```{r}
-load(sprintf("estimation-model/02-result-m%d.RData", wp_model))
+stan_out <- read_stan_csv(file_estimation)
 ```
 
-
 ```{r}
-params <- c("alpha", "beta", "o", "x")
+params <- setNames(c("a", "b", "o", "x"), nm = c("alpha", "beta", "o", "x"))
 
 if (wp_model == 2) {
   
-  params <- c(c("gamma", "tau"), params)
+  params <- c(setNames(c("g", "t"), nm = c("gamma", "tau")), params)
   
 }
 
 pl_params <- substr(params, 1, 1)
 n_params <- length(params)
+
+posterior_stats <- summary(stan_out, pars = params)$summary
+samples <- extract(stan_out, pars = params)
 ```
 
 ```{r}
 get_df <- function(var) {
 
-  quantile_select <- c(0.5, 0.75, 0.9, 0.95, 0.99)
+  rows_param <- lapply(
+    params,
+    function(.x) grep(
+      paste0(.x, "($|\\[[[:digit:]]*\\]$)"), 
+      rownames(posterior_stats)
+    )
+  )
+  param_stat <- sapply(rows_param, function(.x) posterior_stats[.x, var])
 
-  if (var == "n.eff") {
+  quantile_select <- c(0.99, 0.95, 0.9, 0.75, 0.5)
+  digits <- 3
+  
+  if (var == "n_eff") {
     
-    quantile_select <- abs(rev(quantile_select) - 1)
+    quantile_select <- abs(quantile_select - 1)
+    digits <- 0
     
   }
 
   dt <- data.frame(
-    min = round(sapply(jags_out[[var]][1:n_params], min), 3),
-    mean = round(sapply(jags_out[[var]][1:n_params], mean), 3),
-    max = round(sapply(jags_out[[var]][1:n_params], max), 3),
-    quant = t(
-      round(sapply(jags_out[[var]][1:n_params], quantile, quantile_select), 3)
-      ),
-    Npar = sapply(jags_out[[var]][1:n_params], length)
+    maxmin = round(sapply(param_stat, max), digits),
+    quant = t(round(sapply(param_stat, quantile, quantile_select), digits)),
+    mean = round(sapply(param_stat, mean), digits),
+    N_par = sapply(param_stat, length)
   )
+  if (var == "n_eff") {
+    
+    dt$maxmin <- round(sapply(param_stat, min), digits)
+
+  }
   
+  names(dt) <- gsub("maxmin", ifelse(var == "n_eff", "min", "max"), names(dt))
   names(dt) <- gsub("quant\\.", "", names(dt))
   names(dt) <- gsub("\\.$", "%", names(dt))
-  rownames(dt) <- params
+  rownames(dt) <- names(params)
   
   return(dt)
 }
 ```
 
-Scale reduction factors $\hat{R}$ --- close to one and all values < 1.1.
+Scale reduction factors $\hat{R}$ --- close to one and all values < 1.05.
 
 ```{r}
 get_df("Rhat")
@@ -100,7 +119,7 @@ get_df("Rhat")
 Effective samples sizes $N_{eff}$ --- all values > 100
 
 ```{r}
-get_df("n.eff")
+get_df("n_eff")
 ```
 
 
@@ -109,20 +128,20 @@ get_df("n.eff")
 Confirming $\bar{x} = 0$
 
 ```{r}
-round(summary(apply(jags_out$sims.list$x, 1, mean)), 3)
+round(mean(samples$x), 3)
 ```
 
 Confirming $\text{SD}(x) = 1$
 
 ```{r}
-round(summary(apply(jags_out$sims.list$x, 1, sd)), 3)
+round(sd(samples$x), 3)
 ```
 
 
 ## Distribution parties
 
 ```{r}
-plot(density(jags_out$mean$x), main = "")
+plot(density(apply(samples$x, 2, mean)), main = "")
 ```
 
 
@@ -143,39 +162,24 @@ check_condition <- function(var_1, operator, var_2) {
 
 get_plots <- function(var, operator, value) {
   
-  pars <- list()
-  
-  for (l in pl_params) {
-    
-    pars[[l]] <- sapply(
-      which(check_condition(jags_out[[var]][[l]], operator, value)), 
-      function(.x) paste0(l, "[", .x, "]")
-    )
-    
-    if (! is.character(pars[[l]])) {
-      
-      pars[[l]] <- NULL 
-      
-    }
-    
-  }
-  
-  pars <- unlist(pars)
-  
+  select <- which(check_condition(posterior_stats[, var], operator, value))
+  pars <- rownames(posterior_stats[select, ])
+
   if (! is.null(pars)) {
     
-    lapply(pars, function(.x) traceplot(jags_out, parameters = .x))
-    
+    traceplot(stan_out, pars = pars)
+
   }
+  
 }
 ```
 
 ### R-hat
 
-Parameters with $\hat{R} > 1.1$
+Parameters with $\hat{R} > 1.05$
 
 ```{r}
-get_plots("Rhat", `>`, 1.1)
+get_plots("Rhat", `>`, 1.05)
 ```
 
 ### N-eff
@@ -183,6 +187,5 @@ get_plots("Rhat", `>`, 1.1)
 Parameters with $N_{eff} < 100$
 
 ```{r}
-get_plots("n.eff", `<`, 100)
+get_plots("n_eff", `<`, 100)
 ```
-

@@ -1,8 +1,8 @@
-# Wikipedia tag classification
+# Party positions from Wikipedia classifications
 
-Herrmann, Michael, and Holger Döring. 2021. “Party Positions from Wikipedia Classifications of Party Ideology.” Political Analysis. (forthcoming, [pre-print](https://osf.io/evxn6))
+Herrmann, Michael, and Holger Döring. 2021. “Party Positions from Wikipedia Classifications of Party Ideology.” Political Analysis — doi: [10.1017/pan.2021.28](https://doi.org/10.1017/pan.2021.28)
 
-+ Holger Döring — doering@uni-bremen.de
++ Holger Döring — holger.doering@gesis.org
 + Michael Herrmann — michael.herrmann@uni-konstanz.de
 
 Results
@@ -15,16 +15,16 @@ Results
 
 ## Install
 
-Running all scripts requires R, Python and Jags.
+Running all scripts requires R, Python and Stan.
 
-We use [Docker](https://docs.docker.com/get-docker/) as a replication environment. It includes R, RStudio, Python, Jags and all packages (see [Dockerfile](Dockerfile)).
+We use [Docker](https://docs.docker.com/get-docker/) as a replication environment. It includes R, RStudio, Python, Stan and all packages (see [Dockerfile](Dockerfile)).
 
 ## Project structure
 
 __Note__ — Using [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) workflow – _0-wp-data.Rproj_. All R scripts use project root as base path and file paths are based on it.
 
 + [z-run-all.R](z-run-all.R) — stepwise execution all scripts (R and Python)
-+ [data-table-docs.csv](data-table-docs.csv) — documentation all datasets (path, type, description)
++ [data-files-docs.csv](data-files-docs.csv) — documentation all datasets (path, type, description)
 
 ### Folders
 
@@ -60,16 +60,16 @@ We use only Model 2 for post-estimation and the succeeding preparation of final 
 
 We include party position data for validation — see _01-data-sources/03-party-positions/_
 
-+ Chapel Hill Expert Survey ([CHES](https://www.chesdata.eu/)) – trend file 1999-2019
++ Chapel Hill Expert Survey ([CHES](https://www.chesdata.eu/)) – trend file 1999–2019
 + Democratic Accountability and Linkages Project ([DALP](https://sites.duke.edu/democracylinkage/)) expert survey (Kitschelt 2013)
 + Manifesto Project ([MP](https://manifesto-project.wzb.eu/)) – left-right (rile) scores
-+ World Values Survey ([WVS](http://www.worldvaluessurvey.org)) — voters left-right self-placement, Wave 6, 2010-2014
++ World Values Survey ([WVS](http://www.worldvaluessurvey.org)) — voters left-right self-placement, Wave 6, 2010–2014
 
 ---
 
 ## Changes
 
-Differences of revised code with paper based code used in replication material for Herrmann and Döring (2021).
+Differences of revised code with paper-based code used in replication material:
 
 Herrmann, Michael, and Holger Döring. 2021. “Replication Data for: Party Positions from Wikipedia Classifications of Party Ideology.” — doi: [10.7910/DVN/1JHZIU](https://doi.org/10.7910/DVN/1JHZIU)
 
@@ -80,6 +80,7 @@ Herrmann, Michael, and Holger Döring. 2021. “Replication Data for: Party Posi
 
 ### Code
 
++ [Stan](https://mc-stan.org/) statistical computing platform used for estimation (JAGS  deprecated)
 + new folder structure with index numbers
 + fewer R packages dependencies
 + focus on Model 2 (Model 1 estimation only)
