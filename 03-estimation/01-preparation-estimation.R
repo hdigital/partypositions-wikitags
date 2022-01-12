@@ -1,6 +1,7 @@
-## Prepare data for Jags estimation and save results as RData file.
-## Transform Wikipedia data into matrix format (no data frame) and calculate
-## starting values for estimation with correspondence analysis.
+## Prepare data for Stan estimation and save results as RData file.
+## Calculate starting values for estimation with correspondence analysis 
+## and logit regression. Transform binary data matrix to stacked (long)
+## format for estimation (vectorized processing in Stan)
 
 
 library(readr)
@@ -14,20 +15,21 @@ min_parties <- 2  # minimum number of tags per party
 
 ## Functions ----
 
-# Select sub-matrix with row and col margins not lower than min ----
-
 select_submat <- function(mat, row_min, col_min) {
+  
+  # select sub-matrix with row and  
+  # col margins not lower than min
   
   while (any(rowSums(mat) < row_min)) {
     
     row_select <- rowSums(mat) >= row_min
     mat <- mat[row_select, ]
-
+    
     while (any(colSums(mat) < col_min)) {
-
+      
       col_select <- colSums(mat) >= col_min
       mat <- mat[, col_select]
-
+      
     }
     
   }
@@ -36,17 +38,40 @@ select_submat <- function(mat, row_min, col_min) {
   
 }
 
+stack_tag_mat <- function(mat) {
+  
+  # reshape tag presence-absence matrix to  
+  # long format and make party id var
+  
+  names(mat) <- gsub("^", "outcome.", names(mat))
+  mat$party <- seq_len(nrow(mat))
+  
+  mat <- reshape(
+    mat, 
+    direction = "long", 
+    varying = grep("\\.", names(mat), value = TRUE),
+    sep = ".",
+    idvar = "party",
+    timevar = "tag"
+  )
+  mat$tag <- as.factor(mat$tag)
+  
+  return(mat)
+  
+}
 
-# Generate starting values for alpha and beta (via logit reg) given x and o ----
-
-generate_ab <- function(x, o) {
+generate_ab <- function(x, o, y_mat) {
+  
+  # make starting values for alpha and beta (via  
+  # logit reg), given values for x, o and binary
+  # data matrix y
   
   sq_dist <- sapply(o, function(.z) (rep(.z, length(x)) - x) ^ 2)
   
   ab <- mapply(
     function(.y, .x) 
       coef(suppressWarnings(glm(.y ~ .x, family = binomial(link = "logit")))),
-    ideology, 
+    y_mat, 
     data.frame(sq_dist)
   )
   ab <- t(ab)
@@ -55,6 +80,11 @@ generate_ab <- function(x, o) {
   return(ab)
   
 }
+
+
+## Files output ----
+
+filename_out <- "03-estimation/estimation-model/01-data-m%d.RData"
 
 
 
@@ -83,7 +113,10 @@ bcm_raw <- bcm_raw[, names(bcm_raw) != "partyfacts_id"]
 
 ## Model 1 ----
 
-# Data ---
+wp_model <- 1
+
+
+# Trim data (minimum occurrences) ---
 
 ideology <- select_submat(
   bcm_raw[, ! names(bcm_raw) %in% lr], 
@@ -94,6 +127,7 @@ ideology <- select_submat(
 partyfacts_id <- partyfacts_id_all[
   partyfacts_id_all %in% as.integer(gsub("id_", "", row.names(ideology)))
 ]
+party <- setNames(seq_len(nrow(ideology)), nm = partyfacts_id)
 
 
 # Starting values ----
@@ -102,52 +136,49 @@ ca <- MASS::corresp(as.matrix(ideology), n = 1)
 
 x_init <- ca$rscore
 o_init <- ca$cscore
-ab_init <- generate_ab(x_init, o_init)
+ab_init <- generate_ab(x_init, o_init, ideology)
 
+
+# Data set: parties (stacked) and their ideology tags ----
+
+ideology <- stack_tag_mat(ideology)
 
 save(
   ideology,
   x_init,
   o_init,
   ab_init,
+  party,
   partyfacts_id,
-  file = "03-estimation/estimation-model/01-data-m1.RData"
+  file = sprintf(filename_out, wp_model)
 )
-
 
 
 ## Model 2 ----
 
+wp_model <- 2
+
 bcm <- select_submat(bcm_raw, min_parties, min_tags)
+ideology_mat <- bcm[, ! names(bcm) %in% lr]
 
 partyfacts_id <- partyfacts_id_all[
   partyfacts_id_all %in% as.integer(gsub("id_", "", row.names(bcm)))
 ]
+party <- setNames(seq_len(nrow(bcm)), nm = partyfacts_id)
 
 
-# Dataset: ideology classification matrix ----
+# Data set: parties (stacked) and their ideology tags ----
 
-ideology <- bcm[, ! names(bcm) %in% lr]
+ideology <- stack_tag_mat(ideology_mat)
+tagsum <- aggregate(ideology["outcome"], ideology["party"], sum)
+ideology <- ideology[ideology$party %in% tagsum$party[tagsum$outcome > 0], ]
 
 
-# Dataset: parties (stacked) and their lr-position tags ----
+# Data set: parties (stacked) and their lr-position tags ----
 
-left_right <- data.frame(
-  mapply(function(.x, .y) .x * .y, bcm[, lr], seq_along(lr))
-)
-
-names(left_right) <- paste("tag", lr, sep = ".")
-left_right$id <- seq_len(nrow(left_right))
-
-left_right <- reshape(
-  left_right, 
-  direction = "long", 
-  varying = grep("\\.", names(left_right), value = TRUE),
-  sep = ".",
-  timevar = NULL
-)
-
-left_right <- left_right[left_right$tag != 0, ]
+left_right <- mapply(function(.x, .y) .x * .y, bcm[, lr], seq_along(lr))
+left_right <- stack_tag_mat(data.frame(left_right))
+left_right <- left_right[left_right$outcome > 0, setdiff(names(left_right), "tag")]
 
 
 # Starting values ----
@@ -155,14 +186,13 @@ left_right <- left_right[left_right$tag != 0, ]
 ca <- MASS::corresp(as.matrix(bcm), nf = 1)
 
 x_init <- ca$rscore
-o_init <- ca$cscore[names(ideology)]
-ab_init <- generate_ab(x_init, o_init)
+o_init <- ca$cscore[names(ideology_mat)]
+ab_init <- generate_ab(x_init, o_init, ideology_mat)
 
-ologit <- MASS::polr(factor(left_right$tag) ~ x_init[left_right$id])
+ologit <- MASS::polr(factor(left_right$outcome) ~ x_init[left_right$party])
 
 g_init <- coef(ologit)
 t_init <- ologit$zeta
-
 
 save(
   left_right,
@@ -172,6 +202,7 @@ save(
   ab_init,
   g_init,
   t_init,
+  party,
   partyfacts_id,
-  file = "03-estimation/estimation-model/01-data-m2.RData"
+  file = sprintf(filename_out, wp_model)
 )
