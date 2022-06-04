@@ -13,6 +13,17 @@ wp_raw <- read_csv(
 )
 
 
+# check number of entries with missing page entry
+wp_raw %>% 
+  filter(is.na(page)) %>% 
+  count(link, sort = TRUE)
+
+# use link name if page entry is missing
+wp_raw <- 
+  wp_raw %>% 
+  mutate(page = if_else(is.na(page), link, page))
+
+
 ## Check subsection links ----
 
 tag_sec <- 

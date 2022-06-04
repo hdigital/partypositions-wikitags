@@ -86,6 +86,7 @@ Herrmann, Michael, and Holger Döring. 2021. “Replication Data for: Party Posi
 + focus on Model 2 (Model 1 estimation only)
 + removed tables and figures only relevant for paper
 + revised documentation all scripts
++ use Wikipedia link name if page title is not available from scraping
 
 ---
 
