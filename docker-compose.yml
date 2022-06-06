@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  rocker:
+    build: .
+    environment:
+      - DISABLE_AUTH=true
+    ports:
+      - "8787:8787"
+    volumes:
+      - .:/home/rstudio
