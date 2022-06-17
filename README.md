@@ -27,6 +27,8 @@ docker-compose down   # shut down container
 
 <http://localhost:8787/> — RStudio in a browser with all dependencies
 
+see _docker_ (only) usage documentation below
+
 ## Project structure
 
 __Note__ — Using [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) workflow – _0-wp-data.Rproj_. All R scripts use project root as base path and file paths are based on it.
@@ -81,8 +83,10 @@ see _docker-compose_ usage documentation above
 
 + <https://www.rocker-project.org>
 + <https://github.com/rocker-org/rocker-versioned2>
++ <https://github.com/stan-dev/rstan/wiki/Configuring-C-Toolchain-for-Linux#c-toolchain-configuration>
++ Docker -> Settings -> Resourses may be set to 4 CPUs and 4.00 GB Memory or more
 
-Building image and container
+Building image and container with _docker_ (only)
 
 ```sh
 docker build -t wp-rstudio-stan .
