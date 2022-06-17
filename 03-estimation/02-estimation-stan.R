@@ -15,6 +15,8 @@ n_iter <- 2500         # total number of iterations
 n_burn <- 250          # number of burn-in iterations
 stan_seed <- 123456
 
+ideology_reference_tag_right <- "conservatism"
+
 
 ## Stan config ----
 
@@ -52,7 +54,7 @@ stan_inits <- list(
 )
 
 stan_data <- list(
-  con = which(levels(ideology$tag) == "conservatism"),
+  con = which(levels(ideology$tag) == ideology_reference_tag_right),
   I = length(party),
   J = nlevels(ideology$tag),
   N = nrow(ideology),
