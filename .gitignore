@@ -15,10 +15,13 @@ Icon*
 .bash_history
 
 # Python
+.direnv
+.envrc
 .python_history
 .python-version
 .venv
 venv
+
 
 # R files
 ## History files
