@@ -10,7 +10,7 @@ import wikitextparser as wtp
 
 
 results_folder = "wikipedia-data/"
-timeout_seconds = 30
+timeout_seconds = 60
 
 
 def get_links(wikitext):

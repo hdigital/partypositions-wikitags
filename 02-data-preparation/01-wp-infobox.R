@@ -9,7 +9,7 @@ n_min <- 2  # minimal number of tag usage in Wikipedia data
 
 # read Wikipedia data
 wp_raw <- read_csv(
-  "01-data-sources/02-wikipedia/wikipedia-data/03-infobox-tags.csv"
+  "01-data-sources/02-wikipedia/wikipedia-data/04-tags-redirect.csv"
 )
 
 
