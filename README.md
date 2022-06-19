@@ -19,6 +19,14 @@ Running all scripts requires R, Python and Stan.
 
 We use [Docker](https://docs.docker.com/get-docker/) as a replication environment. It includes R, RStudio, Python, Stan and all packages (see [Dockerfile](Dockerfile)).
 
+```sh
+docker-compose up -d  # start container in detached mode
+
+docker-compose down   # shut down container
+```
+
+<http://localhost:8787/> — RStudio in a browser with all dependencies
+
 ## Project structure
 
 __Note__ — Using [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) workflow – _0-wp-data.Rproj_. All R scripts use project root as base path and file paths are based on it.
