@@ -27,8 +27,6 @@ docker-compose down   # shut down container
 
 <http://localhost:8787/> — RStudio in a browser with all dependencies
 
-see _docker_ (only) usage documentation below
-
 ## Project structure
 
 __Note__ — Using [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) workflow – _0-wp-data.Rproj_. All R scripts use project root as base path and file paths are based on it.
@@ -74,34 +72,6 @@ We include party position data for validation — see _01-data-sources/03-party-
 + Democratic Accountability and Linkages Project ([DALP](https://sites.duke.edu/democracylinkage/)) expert survey (Kitschelt 2013)
 + Manifesto Project ([MP](https://manifesto-project.wzb.eu/)) – left-right (rile) scores
 + World Values Survey ([WVS](http://www.worldvaluessurvey.org)) — voters left-right self-placement, Wave 6, 2010–2014
-
----
-
-## Docker
-
-see _docker-compose_ usage documentation above
-
-+ <https://www.rocker-project.org>
-+ <https://github.com/rocker-org/rocker-versioned2>
-+ <https://github.com/stan-dev/rstan/wiki/Configuring-C-Toolchain-for-Linux#c-toolchain-configuration>
-+ Docker -> Settings -> Resourses may be set to 4 CPUs and 4.00 GB Memory or more
-
-Building image and container with _docker_ (only)
-
-```sh
-docker build -t wp-rstudio-stan .
-docker run --rm -it --name wp-rocker -v $(pwd):/home/rstudio -p 8787:8787 -e DISABLE_AUTH=true wp-rstudio-stan
-# use '${pwd}' instead of '$(pwd)' on Windows 10 Powershell
-```
-
-+ <http://localhost:8787/>
-
-Docker usage shell
-
-```sh
-docker exec -it wp-rocker bash  # access container with Bash shell
-R --vanilla < z-run-all.R       # run in root@<CONTAINER-ID>:/home/rstudio
-```
 
 ---
 
