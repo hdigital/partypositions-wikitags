@@ -89,11 +89,35 @@ if(nrow(anti_join(files_data, files_docu)) > 0) {
 
 ## Information session ----
 
-cat("\n\nLast Wikipedia data extraction (needs running Python scripts)")
-file.info("01-data-sources/02-wikipedia/wikipedia-data/01-wp-data-json.zip")$mtime
-file.info("01-data-sources/02-wikipedia/wikipedia-data/03-infobox-tags.csv")$mtime
+mtime_stan_estimation <- 
+  "03-estimation/estimation-model" %>% 
+  list.files(pattern = "csv", full.names = TRUE) %>% 
+  file.info() %>% 
+  rownames_to_column(var = "stan_result") %>% 
+  mutate(
+    stan_result = str_remove(stan_result, "03-estimation/estimation-model/"),
+    date_modified = lubridate::ymd_hms(mtime)
+    ) %>% 
+  unite(stan_estimation, stan_result, date_modified, sep = " --- ") %>% 
+  pull(stan_estimation)
 
-cat("\nLast model Stan estimation (only run if no estimation output exists)\n")
-file.info(
-  list.files("03-estimation/estimation-model", pattern = "csv", full.names = TRUE)
-)$mtime
+# load packages for session info
+library(rstan)
+library(ggrepel)
+
+session_info <- 
+  str_glue(
+    '# Session info\n',
+    '## Wikipedia and estimation update\n',
+    '_Note_ — date and time information based on last file modification\n',
+    'Last Wikipedia data extraction (needs running Python scripts)\n',
+    '01-wp-data-json.zip --- {file.info("01-data-sources/02-wikipedia/wikipedia-data/01-wp-data-json.zip")$mtime}', 
+    '03-infobox-tags.csv --- {file.info("01-data-sources/02-wikipedia/wikipedia-data/03-infobox-tags.csv")$mtime}\n',
+    'Last model Stan estimation (only run if no estimation output exists)\n',
+    '{paste(mtime_stan_estimation, collapse = "\n")}\n',
+    '## R session info\n',
+    '{paste(capture.output(sessionInfo()), collapse = "\n")}',
+    .sep = "\n"
+  )
+
+write_lines(session_info, file = "z-run-all_session-info.md", append = FALSE)
