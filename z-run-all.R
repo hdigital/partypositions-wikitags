@@ -89,11 +89,19 @@ if(nrow(anti_join(files_data, files_docu)) > 0) {
 
 ## Information session ----
 
-cat("\n\nLast Wikipedia data extraction (needs running Python scripts)")
-file.info("01-data-sources/02-wikipedia/wikipedia-data/01-wp-data-json.zip")$mtime
-file.info("01-data-sources/02-wikipedia/wikipedia-data/03-infobox-tags.csv")$mtime
+# load packages for session info
+library(rstan)
+library(ggrepel)
 
-cat("\nLast model Stan estimation (only run if no estimation output exists)\n")
-file.info(
-  list.files("03-estimation/estimation-model", pattern = "csv", full.names = TRUE)
-)$mtime
+session_info <- 
+  str_glue(
+    '# Session info\n',
+    
+    'see date and time of Git commits for information about data updates\n',
+    
+    '## R session info\n',
+    '{paste(capture.output(sessionInfo()), collapse = "\n")}',
+    .sep = "\n"
+  )
+
+write_lines(session_info, file = "z-run-all_session-info.md", append = FALSE)
