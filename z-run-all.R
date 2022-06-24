@@ -89,18 +89,6 @@ if(nrow(anti_join(files_data, files_docu)) > 0) {
 
 ## Information session ----
 
-mtime_stan_estimation <- 
-  "03-estimation/estimation-model" %>% 
-  list.files(pattern = "csv", full.names = TRUE) %>% 
-  file.info() %>% 
-  rownames_to_column(var = "stan_result") %>% 
-  mutate(
-    stan_result = str_remove(stan_result, "03-estimation/estimation-model/"),
-    date_modified = lubridate::ymd_hms(mtime)
-    ) %>% 
-  unite(stan_estimation, stan_result, date_modified, sep = " --- ") %>% 
-  pull(stan_estimation)
-
 # load packages for session info
 library(rstan)
 library(ggrepel)
@@ -108,13 +96,9 @@ library(ggrepel)
 session_info <- 
   str_glue(
     '# Session info\n',
-    '## Wikipedia and estimation update\n',
-    '_Note_ — date and time information based on last file modification\n',
-    'Last Wikipedia data extraction (needs running Python scripts)\n',
-    '01-wp-data-json.zip --- {file.info("01-data-sources/02-wikipedia/wikipedia-data/01-wp-data-json.zip")$mtime}', 
-    '03-infobox-tags.csv --- {file.info("01-data-sources/02-wikipedia/wikipedia-data/03-infobox-tags.csv")$mtime}\n',
-    'Last model Stan estimation (only run if no estimation output exists)\n',
-    '{paste(mtime_stan_estimation, collapse = "\n")}\n',
+    
+    'see date and time of Git commits for information about data updates\n',
+    
     '## R session info\n',
     '{paste(capture.output(sessionInfo()), collapse = "\n")}',
     .sep = "\n"
