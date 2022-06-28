@@ -54,7 +54,7 @@ stan_inits <- list(
 )
 
 stan_data <- list(
-  ideology_tag_right = which(levels(ideology$tag) == ideology_tag_right),
+  tag_right_ideo = which(levels(ideology$tag) == ideology_tag_right),
   I = length(party),
   J = nlevels(ideology$tag),
   N = nrow(ideology),

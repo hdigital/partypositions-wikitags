@@ -3,7 +3,7 @@
 
 data {
 
-  int<lower=1> ideology_tag_right;
+  int<lower=1> tag_right_ideo;
   int<lower=1> I;
   int<lower=1> J;
   int<lower=1> N;
@@ -45,7 +45,7 @@ generated quantities {
   real xbar = mean(xstar);
   real sdx = sd(xstar);
   
-  polarity = xbar < (lambda[ideology_tag_right] / (2 * beta[ideology_tag_right])) ? 1 : -1;
+  polarity = xbar < (lambda[tag_right_ideo] / (2 * beta[tag_right_ideo])) ? 1 : -1;
   x = polarity * (xstar - xbar) / sdx;
   a = delta + beta .* (lambda .* lambda ./ (4 * beta .* beta));
   b = beta * sdx ^ 2;
