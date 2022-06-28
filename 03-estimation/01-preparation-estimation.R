@@ -11,6 +11,7 @@ library(readr)
 min_tags <- 50    # minimum number of tag occurrences
 min_parties <- 2  # minimum number of tags per party
 
+data_source_file <- "02-data-preparation/02-wp-data.csv"
 
 
 ## Functions ----
@@ -90,7 +91,7 @@ filename_out <- "03-estimation/estimation-model/01-data-m%d.RData"
 
 ### Data preparation ----
 
-bcm_raw <- read_csv("02-data-preparation/02-wp-data.csv")
+bcm_raw <- read_csv(data_source_file)
 
 lr <- c(
   "far_left", 
