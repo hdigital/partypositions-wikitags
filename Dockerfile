@@ -1,5 +1,5 @@
 # Parent image
-FROM rocker/tidyverse:4.1.2
+FROM rocker/tidyverse:4.1.3
 
 # Set environment variables for Python
 ENV PYTHONDONTWRITEBYTECODE 1
