@@ -7,7 +7,7 @@ library(tidyverse)
 # packages required by some scripts: ggrepel rstan 
 
 
-option_update_data <- FALSE
+option_update_data <- TRUE
 option_run_estimation <- FALSE
 
 # run all R scripts in a folder

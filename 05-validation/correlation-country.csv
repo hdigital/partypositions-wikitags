@@ -14,7 +14,7 @@ ARG,DALP,economy,0.96
 ARG,DALP,gal_tan,0.5
 ARG,DALP,identity,0.62
 ARG,DALP,left_right,0.92
-ARG,MP,left_right,-0.07
+ARG,MP,left_right,-0.06
 ARG,DALP,redistribute,0.88
 ARM,MP,left_right,0.09
 ARM,WVS,left_right,0.18
@@ -44,7 +44,7 @@ BEL,DALP,gal_tan,0.69
 BEL,DALP,identity,0.95
 BEL,CHES,left_right,0.95
 BEL,DALP,left_right,0.95
-BEL,MP,left_right,0.56
+BEL,MP,left_right,0.62
 BEL,CHES,redistribute,0.77
 BEL,DALP,redistribute,0.59
 BEN,DALP,economy,-0.81
@@ -67,7 +67,7 @@ BGR,DALP,left_right,0.66
 BGR,MP,left_right,0.3
 BGR,CHES,redistribute,0.14
 BGR,DALP,redistribute,-0.04
-BIH,MP,left_right,-0.16
+BIH,MP,left_right,-0.11
 BLR,MP,left_right,0.99
 BOL,DALP,economy,0.89
 BOL,DALP,gal_tan,-0.39
@@ -103,7 +103,7 @@ CHL,DALP,economy,0.97
 CHL,DALP,gal_tan,0.89
 CHL,DALP,identity,0.96
 CHL,DALP,left_right,0.99
-CHL,MP,left_right,0.76
+CHL,MP,left_right,0.77
 CHL,WVS,left_right,0.99
 CHL,DALP,redistribute,0.92
 COL,DALP,economy,0.8
@@ -152,7 +152,7 @@ DNK,DALP,gal_tan,0.79
 DNK,DALP,identity,0.82
 DNK,CHES,left_right,0.94
 DNK,DALP,left_right,0.92
-DNK,MP,left_right,0.88
+DNK,MP,left_right,0.86
 DNK,CHES,redistribute,0.79
 DNK,DALP,redistribute,0.67
 DOM,DALP,economy,0.88
@@ -179,11 +179,11 @@ ESP,DALP,gal_tan,0.94
 ESP,DALP,identity,0.97
 ESP,CHES,left_right,0.92
 ESP,DALP,left_right,0.99
-ESP,MP,left_right,0.74
+ESP,MP,left_right,0.76
 ESP,WVS,left_right,0.97
 ESP,CHES,redistribute,0.94
 ESP,DALP,redistribute,0.99
-EST,CHES,economy,0.35
+EST,CHES,economy,0.37
 EST,DALP,economy,0.66
 EST,CHES,gal_tan,0.73
 EST,DALP,gal_tan,0.72
@@ -192,7 +192,7 @@ EST,CHES,left_right,0.91
 EST,DALP,left_right,0.83
 EST,MP,left_right,0.75
 EST,WVS,left_right,0.71
-EST,CHES,redistribute,0.47
+EST,CHES,redistribute,0.49
 EST,DALP,redistribute,0.57
 FIN,CHES,economy,0.8
 FIN,DALP,economy,0.45
@@ -201,7 +201,7 @@ FIN,DALP,gal_tan,0.72
 FIN,DALP,identity,0.84
 FIN,CHES,left_right,0.92
 FIN,DALP,left_right,0.71
-FIN,MP,left_right,0.77
+FIN,MP,left_right,0.69
 FIN,CHES,redistribute,0.81
 FIN,DALP,redistribute,0.31
 FRA,CHES,economy,0.88
@@ -275,7 +275,7 @@ HUN,DALP,gal_tan,0.77
 HUN,DALP,identity,0.81
 HUN,CHES,left_right,0.93
 HUN,DALP,left_right,0.98
-HUN,MP,left_right,0.79
+HUN,MP,left_right,0.82
 HUN,CHES,redistribute,0.44
 HUN,DALP,redistribute,-0.42
 IDN,DALP,economy,1
@@ -300,7 +300,7 @@ IRL,MP,left_right,0.37
 IRL,CHES,redistribute,0.88
 IRL,DALP,redistribute,0.7
 IRQ,WVS,left_right,-1
-ISL,MP,left_right,0.42
+ISL,MP,left_right,0.41
 ISR,DALP,economy,0.03
 ISR,DALP,gal_tan,0.8
 ISR,DALP,identity,0.93
@@ -314,7 +314,7 @@ ITA,DALP,gal_tan,0.94
 ITA,DALP,identity,0.84
 ITA,CHES,left_right,0.92
 ITA,DALP,left_right,0.9
-ITA,MP,left_right,0.6
+ITA,MP,left_right,0.59
 ITA,CHES,redistribute,0.75
 ITA,DALP,redistribute,0.76
 JAM,DALP,economy,1
@@ -351,13 +351,13 @@ LBY,WVS,left_right,NA
 LKA,MP,left_right,1
 LTU,CHES,economy,0.22
 LTU,DALP,economy,-0.15
-LTU,CHES,gal_tan,0.52
+LTU,CHES,gal_tan,0.49
 LTU,DALP,gal_tan,0.15
 LTU,DALP,identity,0.69
 LTU,CHES,left_right,0.91
 LTU,DALP,left_right,0.44
 LTU,MP,left_right,0.51
-LTU,CHES,redistribute,0.57
+LTU,CHES,redistribute,0.56
 LTU,DALP,redistribute,-0.09
 LUX,CHES,economy,0.93
 LUX,CHES,gal_tan,0.96
@@ -371,7 +371,7 @@ LVA,DALP,gal_tan,0.59
 LVA,DALP,identity,0.8
 LVA,CHES,left_right,0.74
 LVA,DALP,left_right,0.92
-LVA,MP,left_right,0.41
+LVA,MP,left_right,0.46
 LVA,CHES,redistribute,0.64
 LVA,DALP,redistribute,0.77
 MAR,DALP,economy,0.2
@@ -397,7 +397,7 @@ MKD,DALP,economy,0.44
 MKD,DALP,gal_tan,0.77
 MKD,DALP,identity,0.5
 MKD,DALP,left_right,0.98
-MKD,MP,left_right,0.24
+MKD,MP,left_right,0.27
 MKD,DALP,redistribute,-0.39
 MLI,DALP,economy,0.08
 MLI,DALP,gal_tan,NA
@@ -467,7 +467,7 @@ NOR,DALP,economy,0.87
 NOR,DALP,gal_tan,0.55
 NOR,DALP,identity,0.87
 NOR,DALP,left_right,0.9
-NOR,MP,left_right,0.92
+NOR,MP,left_right,0.93
 NOR,DALP,redistribute,0.84
 NZL,DALP,economy,0.91
 NZL,DALP,gal_tan,0.36
@@ -506,7 +506,7 @@ POL,DALP,gal_tan,0.85
 POL,DALP,identity,0.81
 POL,CHES,left_right,0.89
 POL,DALP,left_right,0.66
-POL,MP,left_right,0.41
+POL,MP,left_right,0.37
 POL,WVS,left_right,0.95
 POL,CHES,redistribute,0.18
 POL,DALP,redistribute,-0.35
@@ -517,7 +517,7 @@ PRT,DALP,gal_tan,0.94
 PRT,DALP,identity,0.94
 PRT,CHES,left_right,0.96
 PRT,DALP,left_right,0.99
-PRT,MP,left_right,0.36
+PRT,MP,left_right,0.56
 PRT,CHES,redistribute,0.91
 PRT,DALP,redistribute,0.99
 PRY,DALP,economy,0.5
@@ -560,12 +560,12 @@ SRB,DALP,identity,0.79
 SRB,DALP,left_right,0.95
 SRB,MP,left_right,-0.09
 SRB,DALP,redistribute,-0.23
-SVK,CHES,economy,0.43
+SVK,CHES,economy,0.42
 SVK,DALP,economy,0.2
 SVK,CHES,gal_tan,0.32
 SVK,DALP,gal_tan,0.47
 SVK,DALP,identity,0.33
-SVK,CHES,left_right,0.79
+SVK,CHES,left_right,0.77
 SVK,DALP,left_right,0.47
 SVK,MP,left_right,0.46
 SVK,CHES,redistribute,0.3
@@ -577,7 +577,7 @@ SVN,DALP,gal_tan,0.72
 SVN,DALP,identity,0.94
 SVN,CHES,left_right,0.97
 SVN,DALP,left_right,0.87
-SVN,MP,left_right,0.02
+SVN,MP,left_right,0.26
 SVN,WVS,left_right,0.17
 SVN,CHES,redistribute,0.88
 SVN,DALP,redistribute,0.24
@@ -603,7 +603,7 @@ TUR,DALP,economy,0.12
 TUR,DALP,gal_tan,0.94
 TUR,DALP,identity,0.58
 TUR,DALP,left_right,0.93
-TUR,MP,left_right,0.66
+TUR,MP,left_right,0.58
 TUR,WVS,left_right,0.94
 TUR,DALP,redistribute,0.2
 TWN,DALP,economy,1
@@ -621,7 +621,7 @@ UKR,DALP,economy,0.8
 UKR,DALP,gal_tan,-0.78
 UKR,DALP,identity,0.39
 UKR,DALP,left_right,0.82
-UKR,MP,left_right,0.74
+UKR,MP,left_right,0.66
 UKR,WVS,left_right,0.53
 UKR,DALP,redistribute,0.75
 URY,DALP,economy,0.96
