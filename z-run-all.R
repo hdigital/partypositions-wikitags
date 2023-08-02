@@ -4,7 +4,7 @@
 library(callr)
 library(fs)
 library(tidyverse)
-# packages required by some scripts: ggrepel rstan 
+# packages required by some scripts: ggrepel rstan
 
 
 option_update_data <- FALSE
@@ -24,12 +24,12 @@ if(option_update_data) {
   system("cd 01-data-sources/02-wikipedia/ && python3 z-get-partyfacts-data.py")
   # update Wikipedia data -- needs Python and packages
   system("cd 01-data-sources/02-wikipedia/ && python3 z-run-wikipedia-scripts.py")
-  
+
   # extract party position from various sources (raw data not in Git)
   if(dir_exists("01-data-sources/03-party-positions/00-sources-raw/")) {
     rscript("01-data-sources/03-party-positions/01-sources-select.R")
   }
-  
+
   # create harmonized party positions for validation
   rscript("01-data-sources/03-party-positions/02-party-positions.R")
 }
@@ -44,7 +44,7 @@ rscripts_dir("02-data-preparation")
 if(option_run_estimation) {
   # model is only estimated if estimation results (*.csv) are removed
   file_delete(dir_ls("03-estimation/estimation-model/", glob = "*.csv"))
-  
+
   rscripts_dir("03-estimation")
   r(function() rmarkdown::render("03-estimation/03-convergence.Rmd"))
 }
@@ -70,13 +70,13 @@ if(file_exists("Rplots.pdf")) {
 ## Data files documentation ----
 
 # get all data files in subfolders
-files_data <- 
-  dir_info(recurse = TRUE) %>% 
+files_data <-
+  dir_info(recurse = TRUE) %>%
   filter(
     str_detect(path, "(csv|RData|html|zip)$"),
     str_detect(path, "data-files-doc|00-sources-raw|zyx", negate = TRUE)
-  ) %>% 
-  select(data_file=path, last_modified=modification_time)
+  ) %>%
+  select(data_file = path, last_modified = modification_time)
 
 # get documentation of datasets
 files_docu <- read_csv("data-files-docs.csv")
@@ -93,12 +93,12 @@ if(nrow(anti_join(files_data, files_docu)) > 0) {
 library(rstan)
 library(ggrepel)
 
-session_info <- 
+session_info <-
   str_glue(
     '# Session info\n',
-    
+
     'see date and time of Git commits for information about data updates\n',
-    
+
     '## R session info\n',
     '{paste(capture.output(sessionInfo()), collapse = "\n")}',
     .sep = "\n"
