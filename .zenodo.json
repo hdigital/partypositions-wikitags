@@ -1,0 +1,19 @@
+{
+    "title": "Party positions from Wikipedia tags",
+    "description": "Estimation of party positions from Wikipedia tags with Stan",
+    "creators": [
+      {
+        "name": "Döring, Holger",
+        "affiliation": "GESIS – Leibniz Institute for the Social Sciences",
+        "orcid": "0000-0002-6616-8805"
+      },
+      {
+        "name": "Herrmann, Michael",
+        "affiliation": "University of Konstanz",
+        "orcid": "0000-0001-8070-5825"
+      }
+    ],
+    "license": {
+      "id": "mit"
+    }
+  }
