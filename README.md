@@ -100,3 +100,8 @@ Herrmann, Michael, and Holger Döring. 2021. “Replication Data for: Party Posi
 ---
 
 ![](05-validation/datasets-left-right.png)
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/) — Copyright (c) 2022 Holger Döring and Michael Herrmann
