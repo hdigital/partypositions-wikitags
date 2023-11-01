@@ -4,8 +4,8 @@ Herrmann, Michael, and Holger Döring. 2021. “Party Positions from Wikipedia C
 
 Holger Döring, and Michael Herrmann. [YEAR] “Party Positions from Wikipedia Tags.” — doi: [10.5281/zenodo.7043510](https://doi.org/10.5281/zenodo.7043510)
 
-+ Holger Döring — holger.doering@gesis.org
-+ Michael Herrmann — michael.herrmann@uni-konstanz.de
++ Holger Döring — <holger.doering@gesis.org>
++ Michael Herrmann — <michael.herrmann@uni-konstanz.de>
 
 Results
 
@@ -99,8 +99,7 @@ Herrmann, Michael, and Holger Döring. 2021. “Replication Data for: Party Posi
 
 ---
 
-![](05-validation/datasets-left-right.png)
-
+![datasets](05-validation/datasets-left-right.png)
 
 ## License
 
