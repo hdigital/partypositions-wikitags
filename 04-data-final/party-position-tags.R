@@ -13,6 +13,9 @@ wp_raw <- read_csv("02-data-preparation/01-wp-infobox.csv")
 est_pa_raw <- read_csv("03-estimation/estimation-results/positions-parties-m2.csv")
 est_tag_raw <- read_csv("03-estimation/estimation-results/positions-tags-m2.csv")
 
+# year_last fallback for still-active parties
+wp_scrape_year <- as.numeric(format(file.mtime("02-data-preparation/01-wp-infobox.csv"), "%Y"))
+
 
 ## Data clean-up ----
 
@@ -51,7 +54,7 @@ pf_pa <-
          -new, -technical, -name_other) %>%
   mutate(
   wikipedia = ifelse(is.na(wikipedia), 0, 1),
-  year_last = ifelse(is.na(year_last), 2018, year_last),
+  year_last = pmax(ifelse(is.na(year_last), wp_scrape_year, year_last), year_first),
   years = year_last - year_first
   )
 
